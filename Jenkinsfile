@@ -6,7 +6,7 @@ podTemplate(yaml: '''
       - name: php
         image: php:7.4-fpm
         command:
- 	    - apt-get
+        - apt-get
         args:
         - update
       - name: kaniko
