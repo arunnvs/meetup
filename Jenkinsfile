@@ -24,8 +24,8 @@ podTemplate(yaml: '''
         secret:
             secretName: dockercred
             items:
-            - key: .dockerconfigjson
-              path: config.json
+              - key: .dockerconfigjson
+                path: config.json
 ''') {
   node(POD_LABEL) {
     stage('Get a php project') {
