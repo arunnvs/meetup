@@ -33,7 +33,7 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
-          echo pwd
+          composer install
           '''
         }
       }
