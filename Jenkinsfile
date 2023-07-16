@@ -50,11 +50,10 @@ podTemplate(yaml: '''
         stage('unit tests') {
           sh '''
           PHP_BIN = $(which php)
-          echo ${PHP_BIN}
           phpunit_options := $(phpunit_options) --coverage-clover build/reports/coverage.xml --log-junit build/reports/tests.xml
           echo "################### ALL TESTS ###################"
-	        ${PHP_BIN} bin/console cache:clear --env=test
-	        ${PHP_BIN} bin/phpunit $(phpunit_options) tests
+	        /usr/local/bin/php bin/console cache:clear --env=test
+	        /usr/local/bin/php bin/phpunit $(phpunit_options) tests
           '''
         }
       }
