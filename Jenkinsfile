@@ -42,7 +42,6 @@ podTemplate(yaml: '''
 	        apt-get update -qq && apt-get install -y -qq ruby-full
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');" 
 	        composer self-update 2.3.5
-	        make composer
 	        yarn cache clean
 	        yarn install
 	        yarn encore production
