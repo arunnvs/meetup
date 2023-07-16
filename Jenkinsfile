@@ -33,19 +33,19 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
-          apt-get update && apt-get install -y wget gnupg
+          apt-get update && apt-get install wget gnupg
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 	        echo "deb https://deb.nodesource.com/node_12.x focal main" | tee /etc/apt/sources.list.d/nodesource.list
 	        echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 	        apt-get update -qq && apt-get install -y -qq yarn
 	        apt-get update -qq && apt-get install -y -qq ruby-full
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');" 
 	        composer self-update 2.3.5
 	        make composer
 	        yarn cache clean
 	        yarn install
 	        yarn encore production
-          composer install
           '''
         }
         stage('unit tests') {
