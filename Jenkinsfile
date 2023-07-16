@@ -33,7 +33,7 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
-          apt-get update && apt-get install wget gnupg
+          apt-get update && apt-get install -y wget gnupg
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 	        echo "deb https://deb.nodesource.com/node_12.x focal main" | tee /etc/apt/sources.list.d/nodesource.list
