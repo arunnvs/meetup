@@ -35,10 +35,10 @@ podTemplate(yaml: '''
           sh '''
           apt-get update && apt-get install wget
           apt-get install wget
-	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
-	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-	        echo "deb https://deb.nodesource.com/node_12.x focal main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-	        echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+	        echo "deb https://deb.nodesource.com/node_12.x focal main" | tee /etc/apt/sources.list.d/nodesource.list
+	        echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 	        apt-get update -qq && apt-get install -y -qq yarn
 	        apt-get update -qq && apt-get install -y -qq ruby-full
 	        composer self-update 2.3.5
