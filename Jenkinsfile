@@ -33,6 +33,7 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
+          apt-get update && apt-get install wget
           apt-get install wget
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
