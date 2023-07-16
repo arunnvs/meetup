@@ -8,7 +8,7 @@ podTemplate(yaml: '''
         command:
         - sleep
         args:
-        - 20
+        - 99d
       - name: kaniko
         image: gcr.io/kaniko-project/executor:debug
         command:
@@ -33,11 +33,7 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
-          PHP_BIN ?= php
-          phpunit_options := $(phpunit_options) --coverage-clover build/reports/coverage.xml --log-junit build/reports/tests.xml
-          composer install
-          $(PHP_BIN) bin/console cache:clear --env=test
-	        $(PHP_BIN) bin/phpunit $(phpunit_options) tests
+          PHP_BIN = $(which php)
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 	        echo "deb https://deb.nodesource.com/node_12.x focal main" | sudo tee /etc/apt/sources.list.d/nodesource.list
@@ -49,6 +45,15 @@ podTemplate(yaml: '''
 	        yarn cache clean
 	        yarn install
 	        yarn encore production
+          composer install
+          '''
+        }
+        stage('unit tests') {
+          sh '''
+          phpunit_options := $(phpunit_options) --coverage-clover build/reports/coverage.xml --log-junit build/reports/tests.xml
+          echo "################### ALL TESTS ###################"
+	        $(PHP_BIN) bin/console cache:clear --env=test
+	        $(PHP_BIN) bin/phpunit $(phpunit_options) tests
           '''
         }
       }
@@ -58,7 +63,7 @@ podTemplate(yaml: '''
       container('kaniko') {
         stage('Build a php project') {
           sh '''
-            /kaniko/executor --context `pwd` --destination sarunn/hello-kaniko:1.0
+            /kaniko/executor --context `pwd`  --dockerfile=docker/prod/ --destination sarunn/hello-kaniko:1.0
           '''
         }
       }
