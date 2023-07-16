@@ -62,7 +62,8 @@ podTemplate(yaml: '''
       container('kaniko') {
         stage('Build a php project') {
           sh '''
-            /kaniko/executor --context `pwd`  --dockerfile=docker/prod/Dockerfile --destination sarunn/hello-kaniko:1.0
+            /kaniko/executor --context `pwd`  --dockerfile=docker/prod/Dockerfile --destination sarunn/meetup-prod-php:1.0
+            /kaniko/executor --context `pwd`  --dockerfile=docker/prod/nginx/Dockerfile --destination sarunn/meetup-prod-app-nginx:1.0
           '''
         }
       }
