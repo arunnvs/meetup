@@ -33,13 +33,14 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
+          apt-get install wget
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 	        echo "deb https://deb.nodesource.com/node_12.x focal main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 	        echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-	        sudo apt-get update -qq && sudo apt-get install -y -qq yarn
-	        sudo apt-get update -qq && sudo apt-get install -y -qq ruby-full
-	        sudo composer self-update 2.3.5
+	        apt-get update -qq && sudo apt-get install -y -qq yarn
+	        apt-get update -qq && sudo apt-get install -y -qq ruby-full
+	        composer self-update 2.3.5
 	        make composer
 	        yarn cache clean
 	        yarn install
