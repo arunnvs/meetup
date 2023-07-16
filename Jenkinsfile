@@ -33,7 +33,6 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
-          PHP_BIN = $(which php)
 	        wget -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 	        wget -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 	        echo "deb https://deb.nodesource.com/node_12.x focal main" | sudo tee /etc/apt/sources.list.d/nodesource.list
@@ -50,6 +49,7 @@ podTemplate(yaml: '''
         }
         stage('unit tests') {
           sh '''
+          PHP_BIN = $(which php)
           phpunit_options := $(phpunit_options) --coverage-clover build/reports/coverage.xml --log-junit build/reports/tests.xml
           echo "################### ALL TESTS ###################"
 	        $(PHP_BIN) bin/console cache:clear --env=test
