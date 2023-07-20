@@ -33,6 +33,8 @@ podTemplate(yaml: '''
       container('php') {
         stage('Build a php project') {
           sh '''
+          echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
+          
           apt-get update -yqq && apt-get install -y openssl git wget vim libsqlite3-dev libxml2-dev libicu-dev libfreetype6-dev libmcrypt-dev libjpeg62-turbo-dev libpng-dev \
     libzip-dev unzip libonig-dev libcurl4-gnutls-dev libbz2-dev libssl-dev -yqq libmemcached-dev symfony-cli nodejs npm && rm -r /var/lib/apt/lists/* && rm -rf /var/cache/apt/*
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
