@@ -34,7 +34,7 @@ podTemplate(yaml: '''
         stage('Build a php project') {
           sh '''
           echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
-          
+
           apt-get update -yqq && apt-get install -y openssl git wget vim libsqlite3-dev libxml2-dev libicu-dev libfreetype6-dev libmcrypt-dev libjpeg62-turbo-dev libpng-dev \
     libzip-dev unzip libonig-dev libcurl4-gnutls-dev libbz2-dev libssl-dev -yqq libmemcached-dev symfony-cli nodejs npm && rm -r /var/lib/apt/lists/* && rm -rf /var/cache/apt/*
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -55,6 +55,20 @@ podTemplate(yaml: '''
           && docker-php-ext-install intl \
           && pecl install pcov \
           && docker-php-ext-enable pcov
+          cp /docker/prod/entrypoint.sh /etc/entrypoint.sh
+          chmod +x /etc/entrypoint.sh
+
+          mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+          cp /docker/prod/php/*.ini $PHP_INI_DIR/conf.d/
+
+          cp ./ /code
+          useradd -r -m -u 1000 appmgmt && usermod -a -G www-data appmgmt && \
+          mkdir -p /code/var/{cache,log} && \
+          rm -rf /code/var/cache/* /code/var/log/* && \
+          chown -R appmgmt:www-data /code/var/{cache,log} && \
+          chmod 775 /code/var/{cache,log}
+          make test
+
           '''
         }
         stage('unit tests') {
