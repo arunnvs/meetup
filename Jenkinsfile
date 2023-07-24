@@ -53,21 +53,17 @@ podTemplate(yaml: '''
         docker images
         '''
       }
-      stage('Login to Docker Hub') {      	
-      steps{                       	
+      stage('Login to Docker Hub') {      	                      	
 	    sh '''
       echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
 	    echo 'Login Completed'      
-      '''
-        }           
+      '''          
       }
-      stage('Push Image to Docker Hub') {         
-      steps{                            
+      stage('Push Image to Docker Hub') {                                    
       sh '''
       docker push sarunn/meetup:$BUILD_NUMBER'           
       echo 'Push Image Completed'       
-      '''
-        }            
+      '''            
       }   
 
     }
