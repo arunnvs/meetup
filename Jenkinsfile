@@ -36,9 +36,9 @@ podTemplate(yaml: '''
       }
       stage('test'){
          sh '''
-         'docker ps -a'
-         'docker run -tid --name meetup-app-prod meetup-prod-php'
-         'docker exec -it meetup-app-prod make test'         
+         docker ps -a
+         docker run -tid --name meetup-app-prod meetup-prod-php
+         docker exec -it meetup-app-prod make test
          '''
       }
       }
