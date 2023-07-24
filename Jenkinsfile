@@ -28,6 +28,9 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
       container('docker') {
+      environment {     
+        DOCKERHUB_CREDENTIALS= credentials('dockerhub')     
+      } 
       stage('Build') {
       git url: 'https://github.com/arunnvs/meetup', branch: 'main'
       sh 'DOCKER_BUILDKIT=1 docker build -t meetup-prod-php -f ./docker/prod/Dockerfile .'
@@ -40,10 +43,35 @@ podTemplate(yaml: '''
          docker run -tid --name meetup-app-prod meetup-prod-php
          docker exec -i meetup-app-prod composer install
          docker exec -i meetup-app-prod make test
+         docker exec -i meetup-app-prod ls -al
+         docker images         
          '''
       }
+      stage('Build'){
+        sh '''
+        docker build -t meetup-prod-php -f ./docker/prod/Dockerfile .
+        docker images
+        '''
       }
+      stage('Login to Docker Hub') {      	
+      steps{                       	
+	    sh '''
+      echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+	    echo 'Login Completed'      
+      '''
+        }           
+      }
+      stage('Push Image to Docker Hub') {         
+      steps{                            
+      sh '''
+      docker push sarunn/meetup:$BUILD_NUMBER'           
+      echo 'Push Image Completed'       
+      '''
+        }            
+      }   
 
-      }
+    }
+
+  }
 }
 
