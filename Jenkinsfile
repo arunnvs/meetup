@@ -38,6 +38,7 @@ podTemplate(yaml: '''
          sh '''
          docker ps -a
          docker run -tid --name meetup-app-prod meetup-prod-php
+         docker exec -i meetup-app-prod composer install
          docker exec -i meetup-app-prod make test
          '''
       }
