@@ -26,3 +26,4 @@ install-software-libraries:
 	yarn cache clean
 	yarn install
 	yarn encore production
+	
