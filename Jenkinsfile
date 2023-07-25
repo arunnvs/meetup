@@ -54,10 +54,18 @@ podTemplate(yaml: '''
         '''
       }
       stage('Login to Docker Hub') {
-        	sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
-          sh 'docker push sarunn/meetup:$BUILD_NUMBER'
+          steps {
+            script{
+                def dockerHubCredentials = credentials('dockerhub')
+                sh 'docker login -u ${dockerHubCredentials.username} -p ${dockerHubCredentials.password}'
+            }
+          }
       }
-
+      stage('Build and Push Image') {
+      steps {
+        sh 'docker push meetup-app-prod'
+      }
+    }
     }
   }
   }
