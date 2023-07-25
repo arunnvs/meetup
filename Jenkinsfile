@@ -58,10 +58,10 @@ podTemplate(yaml: '''
       	withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
         	sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
           sh 'docker push sarunn/meetup:$BUILD_NUMBER'
+        }
       }
-    }
 
+    }
   }
-}
 
 }
