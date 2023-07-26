@@ -54,12 +54,17 @@ podTemplate(yaml: '''
         '''
       }
       stage('Login to Docker Hub') {
-          steps {
-            script{
-                def dockerHubCredentials = credentials('dockerhub')
-                sh 'docker login -u ${dockerHubCredentials.username} -p ${dockerHubCredentials.password}'
-            }
-          }
+           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerKey', usernameVariable: 'dockerUser')]) {
+            // avoid using credentials in groovy string interpolation
+            sh label: 'Login to docker registry', script: '''
+            docker login --username $dockerUser --password $dockerKey '''
+
+            sh 'docker push meetup-app-prod'
+ 
+            // do something while being logged in
+            sh label: 'Logout from docker registry', script: '''
+                docker logout
+            '''
       }
       stage('Build and Push Image') {
       steps {
