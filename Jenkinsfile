@@ -66,6 +66,7 @@ podTemplate(yaml: '''
                 docker logout
             '''
       }
+      }
       stage('Build and Push Image') {
       steps {
         sh 'docker push meetup-app-prod'
