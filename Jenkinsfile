@@ -33,14 +33,14 @@ podTemplate(yaml: '''
       } 
       stage('Build') {
       git url: 'https://github.com/arunnvs/meetup', branch: 'main'
-      sh 'DOCKER_BUILDKIT=1 docker build -t meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .'
+      sh 'DOCKER_BUILDKIT=1 docker build -t sarunn/meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .'
       sh 'ls -al'
       sh 'docker images'
       }
       stage('test'){
          sh '''
          docker ps -a
-         docker run -tid --name meetup-app-prod meetup-prod-php:${BUILD_NUMBER}
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER}
 #         docker exec -i meetup-app-prod composer install
 #         docker exec -i meetup-app-prod make test
 #         docker exec -i meetup-app-prod ls -al
@@ -49,7 +49,7 @@ podTemplate(yaml: '''
       }
       stage('Build'){
         sh '''
-        docker build -t meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .
+        docker build -t sarunn/meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .
         docker images
         '''
       }
