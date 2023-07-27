@@ -40,7 +40,7 @@ podTemplate(yaml: '''
       stage('test'){
          sh '''
          docker ps -a
-         docker run -tid --name meetup-app-prod meetup-prod-php
+         docker run -tid --name meetup-app-prod meetup-prod-php:${BUILD_NUMBER}
 #         docker exec -i meetup-app-prod composer install
 #         docker exec -i meetup-app-prod make test
 #         docker exec -i meetup-app-prod ls -al
