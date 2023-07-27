@@ -53,13 +53,13 @@ podTemplate(yaml: '''
         docker images
         '''
       }
-      stage('Login to Docker Hub') {
+      stage('Login to Docker Hub &  Push Image') {
            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerKey', usernameVariable: 'dockerUser')]) {
             // avoid using credentials in groovy string interpolation
             sh label: 'Login to docker registry', script: '''
             docker login --username $dockerUser --password $dockerKey '''
 
-            sh 'docker push meetup-app-prod'
+            sh 'docker push meetup-prod-php'
  
             // do something while being logged in
             sh label: 'Logout from docker registry', script: '''
@@ -67,11 +67,8 @@ podTemplate(yaml: '''
             '''
       }
       }
-      stage('Build and Push Image') {
-      steps {
-        sh 'docker push meetup-app-prod'
-      }
-    }
+      
+    
     }
   }
   }
