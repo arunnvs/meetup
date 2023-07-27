@@ -37,19 +37,25 @@ podTemplate(yaml: '''
       sh 'ls -al'
       sh 'docker images'
       }
-      stage('test'){
+      stage('Run test'){
          sh '''
          docker ps -a
          docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER}
-#         docker exec -i meetup-app-prod composer install
-#         docker exec -i meetup-app-prod make test
-#         docker exec -i meetup-app-prod ls -al
+         docker exec -i meetup-app-prod composer install
+         docker exec -i meetup-app-prod make test
+         docker exec -i meetup-app-prod ls -al
          docker images         
          '''
       }
-      stage('Build'){
+      stage('Build PHP image'){
         sh '''
         docker build -t sarunn/meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .
+        docker images
+        '''
+      }
+      stage('Build Nginx image'){
+        sh '''
+        docker build -t sarunn/meetup-prod-nginx:${BUILD_NUMBER} -f ./docker/prod/nginx/Dockerfile .
         docker images
         '''
       }
@@ -58,9 +64,8 @@ podTemplate(yaml: '''
             // avoid using credentials in groovy string interpolation
             sh label: 'Login to docker registry', script: '''
             docker login --username $dockerUser --password $dockerKey '''
-
             sh 'docker push sarunn/meetup-prod-php:${BUILD_NUMBER}'
- 
+            sh 'docker push sarunn/meetup-prod-nginx:${BUILD_NUMBER}'
             // do something while being logged in
             sh label: 'Logout from docker registry', script: '''
                 docker logout
