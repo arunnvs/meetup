@@ -33,7 +33,7 @@ podTemplate(yaml: '''
       } 
       stage('Build') {
       git url: 'https://github.com/arunnvs/meetup', branch: 'main'
-      sh 'DOCKER_BUILDKIT=1 docker build -t meetup-prod-php -f ./docker/prod/Dockerfile .'
+      sh 'DOCKER_BUILDKIT=1 docker build -t meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .'
       sh 'ls -al'
       sh 'docker images'
       }
@@ -49,7 +49,7 @@ podTemplate(yaml: '''
       }
       stage('Build'){
         sh '''
-#        docker build -t meetup-prod-php -f ./docker/prod/Dockerfile .
+        docker build -t meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .
         docker images
         '''
       }
@@ -59,7 +59,7 @@ podTemplate(yaml: '''
             sh label: 'Login to docker registry', script: '''
             docker login --username $dockerUser --password $dockerKey '''
 
-            sh 'docker push meetup-prod-php'
+            sh 'docker push sarunn/meetup-prod-php:${BUILD_NUMBER}'
  
             // do something while being logged in
             sh label: 'Logout from docker registry', script: '''
