@@ -45,7 +45,7 @@ podTemplate(yaml: '''
          docker exec -i meetup-app-prod make test
          docker exec -i meetup-app-prod ls -al
          docker images
-         docker rm $(docker ps -a -q)
+         docker stop $(docker ps -a -q)
          docker rm $(docker ps -a -q)
          docker rmi $(docker images -q)
          docker images
