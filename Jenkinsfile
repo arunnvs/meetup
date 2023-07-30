@@ -44,7 +44,9 @@ podTemplate(yaml: '''
          docker exec -i meetup-app-prod composer install
          docker exec -i meetup-app-prod make test
          docker exec -i meetup-app-prod ls -al
-         docker images         
+         docker images
+         docker rmi $(docker images -q)
+         docker images
          '''
       }
       stage('Build PHP image'){
