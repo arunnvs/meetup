@@ -44,7 +44,7 @@ podTemplate(yaml: '''
          sh '''
          docker ps -a
          
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} --volumes-from:$JENKINS_AGENT_WORKDIR
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} --volumes-from:$JENKINS_NAME
          docker ps -a
          docker exec meetup-app-prod composer install
          docker exec meetup-app-prod make test
