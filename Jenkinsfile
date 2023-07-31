@@ -40,8 +40,8 @@ podTemplate(yaml: '''
       stage('Run test'){
          sh '''
          docker ps -a
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER}
-         docker exec meetup-app-prod composer install
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} --volume ${pwd()}/:/code
+         docker exec meetup-app-prod make install
          docker exec meetup-app-prod make test
          docker exec meetup-app-prod ls -al
          docker images
@@ -50,8 +50,7 @@ podTemplate(yaml: '''
          docker rmi $(docker images -q)
          docker images
          ls -al
-         make composer install
-         '''
+        '''
       }
       stage('Build PHP image'){
         sh '''
