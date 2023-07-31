@@ -87,9 +87,9 @@ podTemplate(yaml: '''
         sh '''
         cd meetup
         pwd
-        sed -i "s/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:.*/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:${BUILD_NUMBER}/g" app.yaml
-        sed -i "s/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:.*/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:${BUILD_NUMBER}/g" nginx.yaml
-        grep "image:" app.yaml  nginx.yaml
+        sh 'sed -i "s/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:.*/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:${BUILD_NUMBER}/g" app.yaml'
+        sh 'sed -i "s/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:.*/registry\.hub\.docker\.com\/sarunn\/meetup-prod-php\:${BUILD_NUMBER}/g" nginx.yaml'
+        sh 'grep "image:" app.yaml  nginx.yaml'
         '''
       }
 
