@@ -41,6 +41,8 @@ podTemplate(yaml: '''
          sh '''
          docker ps -a
          docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v $PWD:/code
+         docker ps -a
+         sleep 2
          docker exec meetup-app-prod make install
          docker exec meetup-app-prod make test
          docker exec meetup-app-prod ls -al
@@ -86,7 +88,7 @@ podTemplate(yaml: '''
         sh '''
         cd meetup
         pwd
-        
+
 
         '''
       }
