@@ -37,11 +37,14 @@ podTemplate(yaml: '''
       sh 'ls -al'
       sh 'docker images'
       sh 'pwd'
+      sh '$JENKINS_NAME'
+      sh '$JENKINS_AGENT_WORKDIR'
       }
       stage('Run test'){
          sh '''
          docker ps -a
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER}
+         
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} --volumes-from:$JENKINS_AGENT_WORKDIR
          docker ps -a
          docker exec meetup-app-prod composer install
          docker exec meetup-app-prod make test
@@ -87,9 +90,9 @@ podTemplate(yaml: '''
       }
       stage('update mainifests'){
         sh '''
-        cd infra/meetup
+        cd meetup
         pwd
-        ./update_tag.sh ${BUILD_NUMBER}
+        update_tag.sh ${BUILD_NUMBER}
         '''
       }
 
