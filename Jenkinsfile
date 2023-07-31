@@ -82,11 +82,12 @@ podTemplate(yaml: '''
       stage('clone manifests'){
         git url:'https://github.com/arunnvs/infra', branch: 'main'
         sh 'pwd'
+        sh 'ls'
 
       }
       stage('update mainifests'){
         sh '''
-        cd meetup
+        cd infra/meetup
         pwd
         ./update_tag.sh ${BUILD_NUMBER}
         '''
