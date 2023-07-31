@@ -33,6 +33,9 @@ podTemplate(yaml: '''
       } 
       stage('Build') {
       git url: 'https://github.com/arunnvs/meetup', branch: 'main'
+      sh 'pwd'
+      sh '$JENKINS_NAME'
+      sh '$JENKINS_AGENT_WORKDIR'
       sh 'DOCKER_BUILDKIT=1 docker build -t sarunn/meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .'
       sh 'ls -al'
       sh 'docker images'
