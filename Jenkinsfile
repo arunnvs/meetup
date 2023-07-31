@@ -50,7 +50,7 @@ podTemplate(yaml: '''
          docker rmi $(docker images -q)
          docker images
          ls -al
-         composer install
+         make composer install
          '''
       }
       stage('Build PHP image'){
@@ -80,7 +80,8 @@ podTemplate(yaml: '''
       }
       stage('clone manifests'){
         sh '''
-        git url: 'https://github.com/arunnvs/infra', branch: 'future'
+        git url: 'https://github.com/arunnvs/infra', branch: 'feature'
+        
 
         '''
       }
