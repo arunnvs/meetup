@@ -80,9 +80,9 @@ podTemplate(yaml: '''
       }
       }
       stage('clone manifests'){
-        sh '''
-        git url: 'https://github.com/arunnvs/infra', branch: 'feature'
-         '''
+        git url:'https://github.com/arunnvs/infra', branch: 'main'
+        sh 'pwd'
+
       }
       stage('update mainifests'){
         sh '''
