@@ -33,21 +33,23 @@ podTemplate(yaml: '''
       } 
       stage('Build') {
       git url: 'https://github.com/arunnvs/meetup', branch: 'main'
-      sh 'pwd'
-      sh '$JENKINS_NAME'
-      sh '$JENKINS_AGENT_WORKDIR'
+      sh 'echo $PWD'
+      sh 'echo $JENKINS_NAME'
+      sh 'echo $JENKINS_AGENT_WORKDIR'
       sh 'DOCKER_BUILDKIT=1 docker build -t sarunn/meetup-prod-php:${BUILD_NUMBER} -f ./docker/prod/Dockerfile .'
       sh 'ls -al'
       sh 'docker images'
-      sh 'pwd'
-      sh '$JENKINS_NAME'
-      sh '$JENKINS_AGENT_WORKDIR'
+      sh 'echo $PWD'
+      sh 'echo $JENKINS_NAME'
+      sh 'echo $JENKINS_AGENT_WORKDIR'
       }
       stage('Run test'){
          sh '''
          docker ps -a
-         
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} --volumes-from:$JENKINS_NAME
+        docker inspect $JENKINS_NAME | grep "vfs/dir" 
+        datadir=$(docker inspect $JENKINS_NAME  | grep "vfs/dir" | awk '/"(.*)"/ { gsub(/"/,"",$2); print $2 }')
+        echo $datadir
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v $datadir:/code
          docker ps -a
          docker exec meetup-app-prod composer install
          docker exec meetup-app-prod make test
