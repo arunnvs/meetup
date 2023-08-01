@@ -45,11 +45,7 @@ podTemplate(yaml: '''
       }
       stage('Run test'){
          sh '''
-         docker ps -a
-        docker inspect $JENKINS_NAME | grep "vfs/dir" 
-        datadir=$(docker inspect $JENKINS_NAME  | grep "vfs/dir" | awk '/"(.*)"/ { gsub(/"/,"",$2); print $2 }')
-        echo $datadir
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v $datadir:/code
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v /mnt/workspace/dood:/code
          docker ps -a
          docker exec meetup-app-prod composer install
          docker exec meetup-app-prod make test
