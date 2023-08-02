@@ -27,7 +27,7 @@ podTemplate(yaml: '''
                     mountPath: /var/run
 ''') {
   node(POD_LABEL) {
-      container('docker') {
+      container('docker-daemon') {
       environment {     
         DOCKERHUB_CREDENTIALS= credentials('dockerhub')     
       } 
@@ -45,7 +45,7 @@ podTemplate(yaml: '''
       }
       stage('Run test'){
          sh '''
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER}
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v $PWD:/code
          docker ps -a
          docker exec meetup-app-prod sleep 10000
          docker exec meetup-app-prod composer install
