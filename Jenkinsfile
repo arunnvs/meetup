@@ -5,6 +5,9 @@ podTemplate(yaml: '''
                 volumes:
                 - name: docker-socket
                   emptyDir: {}
+                - name: jenkins-data
+                  persistentVolumeClaim:
+                  claimName: jenkins-pv-claim
                 containers:
                 - name: docker
                   image: docker:19.03.1
@@ -23,8 +26,13 @@ podTemplate(yaml: '''
                   securityContext:
                     privileged: true
                   volumeMounts:
+                  - name: jenkins-data
+                    mountPath: /var/jenkins_home
+                  volumeMounts:
                   - name: docker-socket
                     mountPath: /var/run
+                  
+
 ''') {
   node(POD_LABEL) {
       container('docker-daemon') {
