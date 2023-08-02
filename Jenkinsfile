@@ -45,7 +45,7 @@ podTemplate(yaml: '''
       }
       stage('Run test'){
          sh '''
-         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v /mnt/workspace:/code
+         docker run -tid --name meetup-app-prod sarunn/meetup-prod-php:${BUILD_NUMBER} -v /home/jenkins/agent:/code
          docker ps -a
          docker exec meetup-app-prod sleep 10000
          docker exec meetup-app-prod composer install
